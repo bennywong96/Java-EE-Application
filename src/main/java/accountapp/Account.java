@@ -1,10 +1,13 @@
 package accountapp;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Account {
@@ -20,6 +23,10 @@ public class Account {
 	private String lastName;
 	@Column (length = 6)
 	private String accountNumber;
+	@OneToMany(
+	        mappedBy = "account"
+	        )
+	private List<Transactions> transactions;
 	
 
 	public Account(String firstName, String lastName, String accountNumber) {

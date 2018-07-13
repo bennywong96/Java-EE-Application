@@ -1,4 +1,4 @@
-package accountapp;
+package domain;
 
 import java.util.List;
 
@@ -34,6 +34,14 @@ public class Account {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.accountNumber = accountNumber;
+	}
+	
+	public Long getID() {
+		return id;
+	}
+	
+	public void setID(Long id) {
+		this.id = id;
 	}
 	
 	public String getFirstName() {

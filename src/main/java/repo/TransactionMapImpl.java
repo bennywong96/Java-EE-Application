@@ -1,37 +1,46 @@
 package repo;
 
-import java.util.ArrayList;
+
 import java.util.HashMap;
-import java.util.List;
+
 import java.util.Map;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Alternative;
 import javax.inject.Inject;
-import javax.persistence.PersistenceContext;
 
+import constants.Constants;
 import domain.Account;
 import util.JSONUtil;
 
-@Alternative
 @ApplicationScoped
+@Alternative
 public class TransactionMapImpl implements ITransaction {
 	
-	private Map <Long, Account> accountMap = new HashMap<Long, Account>();
+	private Long ID;
+	private Map <Long, Account> accountMap;
 	
 	@Inject
 	private JSONUtil util;
 	
-//	private Long LONG_INT = 1L;
-//	private Long ID;
+	public TransactionMapImpl() {
+		this.accountMap = new HashMap<Long, Account>();
+		ID = 0L;
+	}
 	
 	@Override
     public String addAccount(String account) {
+		ID++;
 		Account newAccount = util.getObjectForJSON(account, Account.class);
+		newAccount.setID(ID);
 		accountMap.put(newAccount.getID(), newAccount);
-		return "Account Added";
+		return Constants.NEW_MESSAGE1;
         
     }
+	
+	public Account findAccount(Long id) {
+		return accountMap.get(id);
+	 }
 	
 	@Override
     public String getAllAccounts() {
@@ -40,41 +49,28 @@ public class TransactionMapImpl implements ITransaction {
     }
         
 	
-//	@Override
-//	public List<Account> getAllAccounts() {
-//       List<Account> list;
-//       if (accountMap.values() instanceof List) {
-//    	   list = (List<Account>)accountMap.values();
-//       }
-//       else {
-//    	   list = new ArrayList<Account>(accountMap.values());
-//       }
-//       return list;
-//    }
 	
 	@Override
 	public String deleteAccount(Long id) {
 		if (accountMap.containsKey(id)) {
 			accountMap.remove(id);
 			
-			return "Deleted Account with ID: " + id;
+			return Constants.DELETE_MESSAGE1;
 		}
 		else {
-		return "Account doesn't exist";
+		return Constants.ERROR_MESSAGE1;
 		}
 	}
 	
 	@Override
 	public String updateAccount(Long id, String account) {
 		Account updatedAcc = util.getObjectForJSON(account, Account.class);
+		updatedAcc.setID(id);
 		accountMap.put(id, updatedAcc);
-		return "Account Updated - " + updatedAcc;
+		return Constants.UPDATE_MESSAGE1;
 	}
 	
-	public Account searchByFirstName(String name) {
-			return accountMap.get(name);
-			
-		 }
+
 
 	
 

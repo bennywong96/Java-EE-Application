@@ -1,6 +1,6 @@
 package repo;
 
-
+import domain.Account;
 
 public interface ITransaction {
 	
@@ -11,4 +11,6 @@ public interface ITransaction {
 	 String updateAccount(Long id, String accountToUpdate);
 	
 	 String deleteAccount(Long id);
+	 
+	 Account findAccount(Long id);
 }

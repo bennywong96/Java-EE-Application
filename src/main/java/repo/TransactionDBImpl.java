@@ -46,22 +46,20 @@ public class TransactionDBImpl implements ITransaction {
         return util.getJSONForObject(query.getResultList());
     }
 	
-//	@Transactional(TxType.REQUIRED)
-//	public List<Account> getAllAccounts() {
-//        TypedQuery<Account> query = 
-//        		manager.createQuery("SELECT a FROM Account a ORDER BY a.id DESC", Account.class);
-//        return query.getResultList();
-//    }
+
 	
 	@Override
 	@Transactional(TxType.REQUIRED)
 	public String deleteAccount(Long id ) {
-		//manager.createQuery("DELETE a FROM Account a WHERE a.id = " + id, Account.class);
 		Account accountInDB = findAccount(id);
 		if (accountInDB != null) {
 			manager.remove(accountInDB);
+			return Constants.DELETE_MESSAGE;
 		}
-		 return Constants.DELETE_MESSAGE;
+		else {
+			return Constants.ERROR_MESSAGE;
+		}
+		 
 	}
 	
 	@Override
@@ -73,8 +71,11 @@ public class TransactionDBImpl implements ITransaction {
 			accountFromDB = updatedAccount;
 			accountFromDB.setID(id);
 			manager.merge(accountFromDB);
+			return Constants.UPDATE_MESSAGE;
 		}
-		return Constants.UPDATE_MESSAGE;
+		else {
+			return Constants.ERROR_MESSAGE;
+		}
 		
 	}
 	

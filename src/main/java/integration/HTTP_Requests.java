@@ -25,6 +25,13 @@ public class HTTP_Requests {
 		return transaction.getAllAccounts();
 	}
 	
+	@Path("/json/{id}")
+	@GET
+	@Produces({ "application/json" })
+	public Account findAccount(@PathParam("id") long id) {
+		return transaction.findAccount(id);
+	}
+	
 	@Path("/json")
 	@POST
 	@Produces({ "application/json" })

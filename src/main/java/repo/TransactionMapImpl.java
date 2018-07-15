@@ -34,7 +34,7 @@ public class TransactionMapImpl implements ITransaction {
 		Account newAccount = util.getObjectForJSON(account, Account.class);
 		newAccount.setID(ID);
 		accountMap.put(newAccount.getID(), newAccount);
-		return Constants.NEW_MESSAGE1;
+		return Constants.NEW_MESSAGE;
         
     }
 	
@@ -55,10 +55,10 @@ public class TransactionMapImpl implements ITransaction {
 		if (accountMap.containsKey(id)) {
 			accountMap.remove(id);
 			
-			return Constants.DELETE_MESSAGE1;
+			return Constants.DELETE_MESSAGE;
 		}
 		else {
-		return Constants.ERROR_MESSAGE1;
+		return Constants.NO_EXIST;
 		}
 	}
 	
@@ -67,7 +67,7 @@ public class TransactionMapImpl implements ITransaction {
 		Account updatedAcc = util.getObjectForJSON(account, Account.class);
 		updatedAcc.setID(id);
 		accountMap.put(id, updatedAcc);
-		return Constants.UPDATE_MESSAGE1;
+		return Constants.UPDATE_MESSAGE;
 	}
 	
 

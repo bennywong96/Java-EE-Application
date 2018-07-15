@@ -9,6 +9,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
+import business.AccountService;
 import domain.Account;
 import repo.ITransaction;
 
@@ -16,7 +17,7 @@ import repo.ITransaction;
 public class HTTP_Requests {
 	
 	@Inject
-	private ITransaction transaction;
+	private AccountService transaction;
 	
 	@Path("/json")
 	@GET

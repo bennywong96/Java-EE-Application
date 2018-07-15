@@ -57,7 +57,7 @@ public class TransactionDBImpl implements ITransaction {
 			return Constants.DELETE_MESSAGE;
 		}
 		else {
-			return Constants.ERROR_MESSAGE;
+			return Constants.NO_EXIST;
 		}
 		 
 	}
@@ -74,7 +74,7 @@ public class TransactionDBImpl implements ITransaction {
 			return Constants.UPDATE_MESSAGE;
 		}
 		else {
-			return Constants.ERROR_MESSAGE;
+			return Constants.NO_EXIST;
 		}
 		
 	}

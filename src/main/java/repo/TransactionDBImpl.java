@@ -15,6 +15,7 @@ import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 import javax.transaction.Transactional.TxType;
 
+import constants.Constants;
 import domain.Account;
 import util.JSONUtil;
 
@@ -23,57 +24,66 @@ import util.JSONUtil;
 public class TransactionDBImpl implements ITransaction {
 	
 	@PersistenceContext(unitName = "primary")
+	private EntityManager manager;
 	
 	@Inject
 	private JSONUtil util;
 	
-	private EntityManager manager;
-
+	@Override
 	@Transactional(TxType.REQUIRED)
     public String addAccount(String account) {
 		Account newAccount = util.getObjectForJSON(account, Account.class);
         manager.persist(newAccount);
-        return "Added " + newAccount;
+        return Constants.NEW_MESSAGE;
     }
 	
+	@Override
 	@Transactional(TxType.REQUIRED)
-    public String getAllAccount() {
+    public String getAllAccounts() {
     	TypedQuery<Account> query = 
-    			manager.createQuery("Select a FROM Account a",Account.class);
+    			manager.createQuery("SELECT a FROM Account a",Account.class);
 		
-        return query.getResultList().toString();
+        return util.getJSONForObject(query.getResultList());
     }
 	
-	@Transactional(TxType.REQUIRED)
-	public List<Account> getAllAccounts() {
-        TypedQuery<Account> query = 
-        		manager.createQuery("SELECT a FROM Account a ORDER BY a.id DESC", Account.class);
-        return query.getResultList();
-    }
+//	@Transactional(TxType.REQUIRED)
+//	public List<Account> getAllAccounts() {
+//        TypedQuery<Account> query = 
+//        		manager.createQuery("SELECT a FROM Account a ORDER BY a.id DESC", Account.class);
+//        return query.getResultList();
+//    }
 	
+	@Override
 	@Transactional(TxType.REQUIRED)
 	public String deleteAccount(Long id ) {
-		
-		manager.createQuery("DELETE a FROM Account a WHERE a.id = " + id, Account.class);
-		 return "Deleted";
+		//manager.createQuery("DELETE a FROM Account a WHERE a.id = " + id, Account.class);
+		Account accountInDB = findAccount(id);
+		if (accountInDB != null) {
+			manager.remove(accountInDB);
+		}
+		 return Constants.DELETE_MESSAGE;
 	}
 	
+	@Override
 	@Transactional(TxType.REQUIRED)
 	public String updateAccount(Long id, String account) {		
 		Account updatedAccount = util.getObjectForJSON(account, Account.class);
-		Account accountFromDB = manager.find(Account.class, id);
+		Account accountFromDB = findAccount(id);
 		if (accountFromDB != null) {
 			accountFromDB = updatedAccount;
-			manager.merge(updatedAccount);
+			accountFromDB.setID(id);
+			manager.merge(accountFromDB);
 		}
-		return "Account Updated";
+		return Constants.UPDATE_MESSAGE;
 		
 	}
 	
-	@Transactional(TxType.REQUIRED)
-	public Account searchByFirstName(String name) {
-			return manager.find(Account.class, name);
+	@Transactional(TxType.SUPPORTS)
+	public Account findAccount(Long id) {
+			return manager.find(Account.class, id);
 		 }
+	
+	
 	
 	
 

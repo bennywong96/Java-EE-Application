@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Alternative;
 import javax.inject.Inject;
 import javax.persistence.PersistenceContext;
@@ -13,14 +14,14 @@ import domain.Account;
 import util.JSONUtil;
 
 @Alternative
-
+@ApplicationScoped
 public class TransactionMapImpl implements ITransaction {
-	@PersistenceContext(unitName = "primary")
+	
+	private Map <Long, Account> accountMap = new HashMap<Long, Account>();
 	
 	@Inject
 	private JSONUtil util;
 	
-	private Map <Long, Account> accountMap = new HashMap<Long, Account>();
 //	private Long LONG_INT = 1L;
 //	private Long ID;
 	
@@ -33,7 +34,7 @@ public class TransactionMapImpl implements ITransaction {
     }
 	
 	@Override
-    public String getAllAccount() {
+    public String getAllAccounts() {
        return util.getJSONForObject(accountMap.values());
        
     }

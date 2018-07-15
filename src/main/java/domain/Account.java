@@ -1,4 +1,4 @@
-package accountapp;
+package domain;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ public class Account {
 	
 	
 	
-	@Id @GeneratedValue (strategy=GenerationType.SEQUENCE)
+	@Id @GeneratedValue (strategy=GenerationType.IDENTITY)
 	private long id;
 	@Column (length = 100)
 	private String firstName;
@@ -23,10 +23,10 @@ public class Account {
 	private String lastName;
 	@Column (length = 6)
 	private String accountNumber;
-	@OneToMany(
-	        mappedBy = "account"
-	        )
-	private List<Transactions> transactions;
+//	@OneToMany(
+//	        mappedBy = "account"
+//	        )
+//	private List<Transactions> transactions;
 	
 
 	public Account(String firstName, String lastName, String accountNumber) {
@@ -34,6 +34,18 @@ public class Account {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.accountNumber = accountNumber;
+	}
+	
+	private Account () {
+		
+	}
+	
+	public Long getID() {
+		return id;
+	}
+	
+	public void setID(Long id) {
+		this.id = id;
 	}
 	
 	public String getFirstName() {
